@@ -6,7 +6,7 @@ PASSWORD=${2} 	# Wallet Password
 while true
 do
     while read address; do
-        ./okp4-flex-reinvest.sh0 "$WALLET" "$PASSWORD" $address
+        ./okp4-flex-reinvest.sh "$WALLET" "$PASSWORD" $address
         sleep 10
     done < validators.txt
 
