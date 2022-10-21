@@ -22,8 +22,8 @@ do
 	# Очень-очень грязный хак, предотвращающий забивание памяти.
 	# Каждый запуск okp4d оставляет два таких процесса.
 	# Причина неясна.
-    sudo killall /usr/bin/gnome-keyring-daemon 
-    sudo killall /usr/bin/dbus-daemon
+    killall /usr/bin/gnome-keyring-daemon 
+    killall /usr/bin/dbus-daemon
 
 sleep 600    
 done
