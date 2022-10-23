@@ -26,7 +26,8 @@ do
 
 	echo "Кошелек: $name. Публичный ключ: $address"     
     
-    LIST=$(echo $LIST | jq  ". += [{\"name\":\"${name}\", \"address\":\"${address}\", \"mnemonic\":\"${mnemonic}\", \"pubkey\":${pubkey}}]")
+    #LIST=$(echo $LIST | jq  ". += [{\"name\":\"${name}\", \"address\":\"${address}\", \"mnemonic\":\"${mnemonic}\", \"pubkey\":${pubkey}}]")
+    LIST=$(echo $LIST | jq  ". += [{\"name\":\"${name}\", \"address\":\"${address}\", \"mnemonic\":\"${mnemonic}\"}]")
 done
 
 echo $LIST | jq > $FILENAME
