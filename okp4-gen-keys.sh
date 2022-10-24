@@ -12,7 +12,7 @@ if [ -z "$KEYRING_BACKEND" ]
 then
    KEYRING_BACKEND="file"
 fi
-date
+echo "Start at `date`"
 
 echo "Будет сгенерировано $WALLETSNUM кошельков. Результат сохранится в файле $FILENAME"
 

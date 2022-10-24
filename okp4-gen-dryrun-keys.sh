@@ -7,7 +7,8 @@ OKP4BIN=okp4d
 FILENAME=${PREFIX}.keys
 
 LIST="[]"
-date
+echo "Start at `date`"
+
 
 for (( i=1; i<=$WALLETSNUM; i++ ))
 do
