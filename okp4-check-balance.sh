@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PREFIX=${1} 	# Prefix for new wallets
+PREFIX=${1} 	# Prefix for keys wallet
 
 FILENAME=${PREFIX}.keys
 
@@ -13,11 +13,13 @@ jq -c '.[]' $FILENAME | while read i; do
 
 	RES=$($OKP4BIN query bank balances  ${address} --node tcp://localhost:27657  --output=json | jq -r '.balances[].amount')
 	
-	if (( $RES > 0 )); then
-		echo $i | jq -r '.name'
-		echo $address
-		echo $RES
+	if [ -z "$RES" ]
+	then
+ 	   continue
 	fi
 
+	echo $i | jq -r '.name'
+	echo $address
+	echo $RES
 done
 

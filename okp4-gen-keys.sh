@@ -19,7 +19,7 @@ do
 
     NEW_KEY=$(echo ${PASSWORD} | $OKP4BIN keys add ${PREFIX}${i} --keyring-backend=${KEYRING_BACKEND} --output json)
     
-    name=$(echo $NEW_KEY | jq -r '.name')
+    name=${PREFIX}${i} #$(echo $NEW_KEY | jq -r '.name')
     address=$(echo $NEW_KEY | jq -r '.address')
     mnemonic=$(echo $NEW_KEY | jq -r '.mnemonic')
     pubkey=$(echo $NEW_KEY | jq '.pubkey')
