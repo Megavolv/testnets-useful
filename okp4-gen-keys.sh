@@ -20,7 +20,6 @@ LIST="[]"
 
 for (( i=1; i<=$WALLETSNUM; i++ ))
 do
-	echo "Wallet $i of $WALLETSNUM"
     NEW_KEY=$($OKP4BIN keys add ${PREFIX}${i} --keyring-backend=${KEYRING_BACKEND} --output json)
     LIST=$(echo $LIST | jq  ". += [$NEW_KEY]")
     
