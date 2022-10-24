@@ -17,6 +17,7 @@ RESULTMSG=$(cat $(echo "${ALLLIST}" | head -1)) # Первый файл испо
 WORKLIST=$(find "tx" -name '*.json' | tail +2)
 
 for name in ${WORKLIST}; do
+	echo "Processing $name"
     M2M=$(cat $name | jq '.body.messages')
     RESULTMSG=$(echo $RESULTMSG | jq ".body.messages += [$M2M]")
 done
