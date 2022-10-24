@@ -19,7 +19,7 @@ WORKLIST=$(find "tx" -name '*.json' | tail +2)
 for name in ${WORKLIST}; do
 	echo "Processing $name"
     M2M=$(cat $name | jq '.body.messages')
-    RESULTMSG=$(echo $RESULTMSG | jq ".body.messages += [$M2M]")
+    RESULTMSG=$(echo $RESULTMSG | jq ".body.messages += $M2M")
 done
 
 let "GAS = 200000*$NUM"
