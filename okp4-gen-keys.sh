@@ -12,6 +12,7 @@ if [ -z "$KEYRING_BACKEND" ]
 then
    KEYRING_BACKEND="file"
 fi
+date
 
 echo "Будет сгенерировано $WALLETSNUM кошельков. Результат сохранится в файле $FILENAME"
 
@@ -23,7 +24,7 @@ do
     NEW_KEY=$($OKP4BIN keys add ${PREFIX}${i} --keyring-backend=${KEYRING_BACKEND} --output json)
     LIST=$(echo $LIST | jq  ". += [$NEW_KEY]")
     
-	if (( $i%1000 == 0))
+	if (( $i%100 == 0))
 	then
 		date
 		echo "Added next 1000 keys"

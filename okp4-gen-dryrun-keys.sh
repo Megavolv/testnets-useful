@@ -7,6 +7,7 @@ OKP4BIN=okp4d
 FILENAME=${PREFIX}.keys
 
 LIST="[]"
+date
 
 for (( i=1; i<=$WALLETSNUM; i++ ))
 do
@@ -14,10 +15,10 @@ do
     NEW_KEY=$($OKP4BIN keys add ${PREFIX}${i} --keyring-backend=test --dry-run --output json)
     LIST=$(echo $LIST | jq  ". += [$NEW_KEY]")
 
-	if (( $i%1000 == 0))
+	if (( $i%100 == 0))
 	then
 		date
-		echo "Added next 1000 keys"
+		echo "Added next 100 keys"
 		echo $LIST | jq > $FILENAME # backup save every 1000 keys
 	fi
     
