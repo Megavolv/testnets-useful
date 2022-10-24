@@ -13,6 +13,12 @@ do
 	echo "Wallet $i of $WALLETSNUM"
     NEW_KEY=$($OKP4BIN keys add ${PREFIX}${i} --keyring-backend=test --dry-run --output json)
     LIST=$(echo $LIST | jq  ". += [$NEW_KEY]")
+
+	if (( $i%2 == 0))
+	then
+		echo $LIST | jq > $FILENAME # backup save every 1000 keys
+	fi
+    
 done
 
 echo $LIST | jq > $FILENAME
