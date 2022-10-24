@@ -26,7 +26,7 @@ do
 	if (( $i%100 == 0))
 	then
 		date
-		echo "Added next 1000 keys"
+		echo `date; echo "- added next 100 keys"`
 		echo $LIST | jq > $FILENAME # backup save every 1000 keys
 	fi
     
