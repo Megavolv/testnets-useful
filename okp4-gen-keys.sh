@@ -3,6 +3,12 @@
 PREFIX=${1} 	# Prefix for new wallets
 PASSWORD=${2} 	# Current wallet Password
 WALLETSNUM=${3} # Number of wallets generated
+KEYRING_BACKEND=${4}
+
+	if [ -z "$KEYRING_BACKEND" ]
+	then
+ 	   KEYRING_BACKEND="file"
+	fi
 
 FILENAME=${PREFIX}.keys
 
