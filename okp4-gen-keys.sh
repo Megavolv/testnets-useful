@@ -23,8 +23,10 @@ do
     NEW_KEY=$($OKP4BIN keys add ${PREFIX}${i} --keyring-backend=${KEYRING_BACKEND} --output json)
     LIST=$(echo $LIST | jq  ". += [$NEW_KEY]")
     
-	if (( $i%2 == 0))
+	if (( $i%1000 == 0))
 	then
+		date
+		echo "Added next 1000 keys"
 		echo $LIST | jq > $FILENAME # backup save every 1000 keys
 	fi
     
