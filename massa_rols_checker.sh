@@ -14,9 +14,15 @@ while true
 do
 # Проверяем текущий статус массы
 	STATUS=$($MASSABIN -p $PASSWORD get_status)
+	#if [[ $STATUS == *"wrong password"* ]]; then
+	#	./pigeon --text "$1: wrong password, exiting" --bot "fl"
+	#	secho "Wrong password, exiting"
+	#	exit
+	#fi
+	
 	if [[ $STATUS == *"error"* ]]; then
 			restart $NODENAME
-			sleep 5s
+			sleep 10s
 		else
 			break
 	fi
@@ -38,7 +44,7 @@ if [[ $CANDIDATE_ROLLS_COUNT -eq 0 ]]; then
 		./pigeon --text "${NODENAME}: need to buy rolls" --bot "fl"
 		echo "Need to buy rolls"
 
-		($MASSABIN -p ${PASSWORD} buy_rolls $ADDRESS 1 0)
+		$MASSABIN -p ${PASSWORD} buy_rolls $ADDRESS 1 0
 	else
-		echo "No action is needed"
+		echo `date`; echo "No action is needed"
 fi
