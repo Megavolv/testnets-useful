@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 	"strconv"
+	"sync"
 
 	"okp4-fast-gen-keys/pkg/cosmos"
 
@@ -36,9 +38,20 @@ func init() {
 }
 
 func main() {
-	for i := 0; i < num; i++ {
-		fmt.Println(CreateNextKey(prefix, i))
+	chunk := num / runtime.NumCPU()
+
+	var wg sync.WaitGroup
+
+	for n := 0; n < runtime.NumCPU(); n++ {
+		wg.Add(1)
+		go func(x int) {
+			for i := x * chunk; i < (x*chunk)+chunk; i++ {
+				fmt.Println(CreateNextKey(prefix, i))
+			}
+			wg.Done()
+		}(n)
 	}
+	wg.Wait()
 }
 
 func CreateNextKey(name string, n int) string {
