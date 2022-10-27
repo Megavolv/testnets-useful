@@ -17,12 +17,16 @@ import (
 )
 
 var KeysCdc *codec.LegacyAmino
+
 var prefix string
-var num int
+var from int
+var to int
 
 func init() {
-	flag.StringVar(&prefix, "name", "prefix", "Set prefix for generated wallets")
-	flag.IntVar(&num, "num", 100, "Number of wallets generated")
+	flag.StringVar(&prefix, "prefix", "prefix", "Set prefix for generated keys")
+	flag.IntVar(&from, "from", 0, "Lower bound of the range")
+	flag.IntVar(&to, "to", 100, "Upper limit of the range")
+
 	flag.Parse()
 
 	KeysCdc = codec.NewLegacyAmino()
@@ -38,14 +42,23 @@ func init() {
 }
 
 func main() {
-	chunk := num / runtime.NumCPU()
+	// Текущий диапазон ключей
+	chunk := (to - from) / runtime.NumCPU()
 
 	var wg sync.WaitGroup
 
 	for n := 0; n < runtime.NumCPU(); n++ {
 		wg.Add(1)
-		go func(x int) {
-			for i := x * chunk; i < (x*chunk)+chunk; i++ {
+		go func(n int) {
+			start := from + n*chunk
+			end := from + (n * chunk) + chunk
+
+			// Особое условие для последнего потока в связи с погрешностью деления
+			if n == runtime.NumCPU()-1 {
+				end = to
+			}
+
+			for i := start; i < end; i++ {
 				fmt.Println(CreateNextKey(prefix, i))
 			}
 			wg.Done()

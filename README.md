@@ -10,9 +10,13 @@ How to use:
 
 	git clone github.com/Megavolv/testnets-useful/
 	cd okp4-fast-gen-keys; go build
-	bash: date; nice -n 19 ./okp4-fast-gen-keys --name="mykey" --num 1000000 > keys.json; date
+	bash: date; nice -n 19 ./okp4-fast-gen-keys --prefix="mykey" > keys.json; date
 
-This command will generate 1 million keys with name from mykey0 to mykey999999 and save them to keys.json.
+This command will generate 100 keys with names from mykey0 to mykey99 and save them to keys.json.
+
+	./okp4-fast-gen-keys --prefix="mykey" --from 10000 --to 1000000 > keys.json
+
+This command will generate 990000 keys with names from mykey10000 to mykey999999 and save them to keys.json.
 
 For example:
 
