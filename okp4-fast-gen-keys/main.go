@@ -21,11 +21,13 @@ var KeysCdc *codec.LegacyAmino
 var prefix string
 var from int
 var to int
+var cpus int
 
 func init() {
 	flag.StringVar(&prefix, "prefix", "prefix", "Set prefix for generated keys")
 	flag.IntVar(&from, "from", 0, "Lower bound of the range")
 	flag.IntVar(&to, "to", 100, "Upper limit of the range")
+	flag.IntVar(&cpus, "cpus", runtime.NumCPU(), "Number of cores to use. By default - all cores")
 
 	flag.Parse()
 
@@ -43,18 +45,18 @@ func init() {
 
 func main() {
 	// Текущий диапазон ключей
-	chunk := (to - from) / runtime.NumCPU()
+	chunk := (to - from) / cpus
 
 	var wg sync.WaitGroup
 
-	for n := 0; n < runtime.NumCPU(); n++ {
+	for n := 0; n < cpus; n++ {
 		wg.Add(1)
 		go func(n int) {
 			start := from + n*chunk
 			end := from + (n * chunk) + chunk
 
 			// Особое условие для последнего потока в связи с погрешностью деления
-			if n == runtime.NumCPU()-1 {
+			if n == cpus-1 {
 				end = to
 			}
 
