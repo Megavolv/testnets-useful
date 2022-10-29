@@ -17,7 +17,7 @@ var cpus int
 var out string
 
 func init() {
-	flag.StringVar(&prefix, "prefix", "keys", "Set prefix for generated keys")
+	flag.StringVar(&prefix, "prefix", "key", "Set prefix for generated keys")
 	flag.IntVar(&from, "from", 0, "Lower bound of the range")
 	flag.IntVar(&to, "to", 100, "Upper limit of the range")
 	flag.IntVar(&cpus, "cpus", runtime.NumCPU(), "Number of cores to use. By default - all cores")
