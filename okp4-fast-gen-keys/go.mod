@@ -4,12 +4,14 @@ go 1.18
 
 require (
 	github.com/99designs/gqlgen v0.17.20
+	github.com/Megavolv/okp4lib v0.0.0-20221029183127-a3ad90a58d4a
 	github.com/asynkron/protoactor-go v0.0.0-20220616142548-afd2d973a1d1
 	github.com/cosmos/cosmos-sdk v0.46.3
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/prometheus/client_golang v1.13.0
 	github.com/rs/zerolog v1.28.0
+	github.com/sirupsen/logrus v1.9.0
 	github.com/smartystreets/goconvey v1.7.2
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/pflag v1.0.5
