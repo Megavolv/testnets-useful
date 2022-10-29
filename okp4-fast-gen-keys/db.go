@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const TRIGGER_THRESHOLD = 512 // TODO
+const TRIGGER_THRESHOLD = 4096 // TODO
 
 type Db struct {
 	KeysName     string
