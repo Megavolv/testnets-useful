@@ -2,19 +2,15 @@ package main
 
 import (
 	"encoding/binary"
-	//"fmt"
-	"strconv"
+	"fmt"
 
-	//"github.com/davecgh/go-spew/spew"
+	//"strconv"
 
-	//"fmt"
 	"os"
 	"strings"
 )
 
-//"os"
-
-const TRIGGER_THRESHOLD = 5
+const TRIGGER_THRESHOLD = 512 // TODO
 
 type Db struct {
 	KeysName     string
@@ -29,11 +25,15 @@ type Db struct {
 	index  []uint32
 }
 
-func NewDb(name string, num int) *Db {
+//Генерация имени для файла с ключами и индексом
+func GenFileNames(prefix string, start, end int) (keys_name string, index_name string) {
+	return fmt.Sprintf("%s.%d-%d.json", prefix, start, end), fmt.Sprintf("%s.%d-%d.idx", prefix, start, end)
+}
+
+func NewDb(keysname, indexname string, num int) *Db {
 	db := &Db{
-		KeysName:  name + ".json." + strconv.Itoa(num),
-		IndexName: name + ".idx." + strconv.Itoa(num),
-		num:       num,
+		KeysName:  keysname,
+		IndexName: indexname,
 	}
 
 	var err error
@@ -82,8 +82,6 @@ func (db *Db) Add(key string) {
 	db.buffer[db.counter] = key
 	db.index[db.counter] = db.offset
 
-	//fmt.Println(db.offset, strconv.FormatUint(uint64(db.offset), 16))
-
 	db.offset += uint32(len(key))
 	db.counter += 1
 
@@ -94,7 +92,6 @@ func (db *Db) Add(key string) {
 
 	if int(db.counter) == len(db.buffer) {
 		//fmt.Println("Flush по заполнению буфера")
-		//	spew.Dump(db.index)
 		db.Flush()
 	}
 

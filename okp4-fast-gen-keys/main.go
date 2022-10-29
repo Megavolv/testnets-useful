@@ -2,6 +2,7 @@ package main
 
 import (
 	"runtime"
+	"strconv"
 	"sync"
 
 	"github.com/Megavolv/okp4lib"
@@ -16,10 +17,11 @@ var cpus int
 var out string
 
 func init() {
-	flag.StringVar(&prefix, "prefix", "prefix", "Set prefix for generated keys")
+	flag.StringVar(&prefix, "prefix", "keys", "Set prefix for generated keys")
 	flag.IntVar(&from, "from", 0, "Lower bound of the range")
 	flag.IntVar(&to, "to", 100, "Upper limit of the range")
 	flag.IntVar(&cpus, "cpus", runtime.NumCPU(), "Number of cores to use. By default - all cores")
+	flag.Parse()
 }
 
 func main() {
@@ -42,10 +44,11 @@ func main() {
 				end = to
 			}
 
-			mydb := NewDb(prefix, n)
+			keys_name, index_name := GenFileNames(prefix, start, end)
+			mydb := NewDb(keys_name, index_name, n)
 
 			for i := start; i < end; i++ {
-				key, err := okp4.CreateJsonedKey(prefix)
+				key, err := okp4.CreateJsonedKey(prefix + strconv.Itoa(i))
 				if err != nil {
 					logger.Error(err)
 					break
