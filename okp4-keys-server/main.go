@@ -28,38 +28,43 @@ type Server struct {
 }
 
 type Q struct {
-	Target int64
-	Count  int64
+	Start int64
+	Count int64
 }
 
 func (s Server) handleGet(w http.ResponseWriter, req *http.Request) {
-	start := time.Now()
+	loc, err := time.LoadLocation("Europe/Moscow")
+	if err != nil {
+		s.logger.Error(err)
+		return
+	}
+	start := time.Now().In(loc)
 
 	var q Q
 
-	err := json.NewDecoder(req.Body).Decode(&q)
+	err = json.NewDecoder(req.Body).Decode(&q)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		s.logger.Error(req.Body, err)
 		return
 	}
 
-	from := fmt.Sprintf("From: %s, Target: %d, count: %d\n", req.RemoteAddr, q.Target, q.Count)
+	from := fmt.Sprintf("Date: %s, From: %s, Start: %d, count: %d\n", start.String(), req.RemoteAddr, q.Start, q.Count)
 	s.logger.Info(from)
 
 	if q.Count == 0 {
 		q.Count = 1
 		s.logger.Info(fmt.Sprintf("From: %s, New count: %d\n", req.RemoteAddr, q.Count))
 	} else if q.Count > 10000 {
-		s.logger.Info(fmt.Sprintf("From: %s, New count: %d\n", req.RemoteAddr, q.Count))
 		q.Count = 10000
+		s.logger.Info(fmt.Sprintf("From: %s, New count: %d\n", req.RemoteAddr, q.Count))
 	}
 
-	data, err := s.list.GetKeys(q.Target, q.Count)
+	data, err := s.list.GetKeys(q.Start, q.Count)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		duration := time.Since(start)
-		s.logger.Info("From: %s. Request completed in ", from, duration)
+		s.logger.Info(fmt.Sprintf("From: %s. Request completed in %s", req.RemoteAddr, duration.String()))
 
 		return
 	}
@@ -70,7 +75,7 @@ func (s Server) handleGet(w http.ResponseWriter, req *http.Request) {
 	}
 
 	duration := time.Since(start)
-	s.logger.Info("From: %s. Request completed in ", from, duration)
+	s.logger.Info(fmt.Sprintf("From: %s. Request completed in %s", req.RemoteAddr, duration.String()))
 	return
 }
 
