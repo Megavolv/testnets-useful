@@ -15,10 +15,12 @@ import (
 
 var loglevel string
 var path string
+var limit int64
 
 func init() {
 	flag.StringVar(&loglevel, "level", "debug", "Log level (error|warn|info|debug)")
 	flag.StringVar(&path, "path", "db/", "Path to keys")
+	flag.Int64Var(&limit, "limit", 100000, "Limit on the number of keys per request")
 	flag.Parse()
 }
 
@@ -55,8 +57,8 @@ func (s Server) handleGet(w http.ResponseWriter, req *http.Request) {
 	if q.Count == 0 {
 		q.Count = 1
 		s.logger.Info(fmt.Sprintf("From: %s, New count: %d\n", req.RemoteAddr, q.Count))
-	} else if q.Count > 10000 {
-		q.Count = 10000
+	} else if q.Count > limit {
+		q.Count = limit
 		s.logger.Info(fmt.Sprintf("From: %s, New count: %d\n", req.RemoteAddr, q.Count))
 	}
 
